@@ -444,6 +444,27 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 634127463}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &766174296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1909401005227548, guid: 4679d90a25e01b646b05cfaf5e86076f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1563254778}
+--- !u!114 &766174297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 766174296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0144bb7e382d6d74ba5a1cd69b669613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  maxAngle: 45
+  minAngle: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
 --- !u!1 &960424266
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c017f4b158da95e4da785de61c0968c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle: 10
+  angle: 0
   axis: {x: 1, y: 0, z: 0}
 --- !u!114 &1533236264
 MonoBehaviour:
@@ -843,6 +864,21 @@ Prefab:
       propertyPath: original
       value: 
       objectReference: {fileID: 401956257}
+    - target: {fileID: 114284497306762468, guid: 4679d90a25e01b646b05cfaf5e86076f,
+        type: 2}
+      propertyPath: minAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114284497306762468, guid: 4679d90a25e01b646b05cfaf5e86076f,
+        type: 2}
+      propertyPath: maxAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 114284497306762468, guid: 4679d90a25e01b646b05cfaf5e86076f,
+        type: 2}
+      propertyPath: active
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4679d90a25e01b646b05cfaf5e86076f, type: 2}
   m_IsPrefabAsset: 0

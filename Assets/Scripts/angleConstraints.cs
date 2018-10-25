@@ -26,11 +26,9 @@ public class angleConstraints : MonoBehaviour
             Vector3 axis;
             float angle;
 
-            transform.rotation.ToAngleAxis(out angle, out axis);
+            transform.localRotation.ToAngleAxis(out angle, out axis);
 
-            axis.x = Mathf.Clamp(axis.x, minAngle, maxAngle);
-            axis.y = Mathf.Clamp(axis.y, minAngle, maxAngle);
-            axis.z = Mathf.Clamp(axis.z, minAngle, maxAngle);
+            angle = Mathf.Clamp(angle, minAngle, maxAngle);
 
             transform.localRotation = Quaternion.AngleAxis(angle, axis);
         }
