@@ -9,18 +9,19 @@ public class ForwardKinematicSolver : MonoBehaviour {
 	void Start () {
 
         RunFK();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
-
-	}
+        
+    }
 
     private void RunFK()
     {
         foreach(FKNode n in nodes)
         {
-            n.transform.Rotate(n.axis, n.angle);           
+            n.transform.Rotate(n.Axis, n.angle);
+            //n.transform.rotation = new Quaternion(n.Axis.x, n.Axis.y, n.Axis.z, n.angle);
         }
     }
 }

@@ -208,6 +208,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1662742815888878, guid: d3df14e6198feab4ba4b4f289688b492,
     type: 2}
   m_PrefabInternal: {fileID: 1306039011}
+--- !u!114 &401956259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 401956257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c017f4b158da95e4da785de61c0968c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 0
+  axis: {x: 0, y: 0, z: 0}
 --- !u!1 &508128559
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,6 +758,33 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1936048448986828, guid: d3df14e6198feab4ba4b4f289688b492,
     type: 2}
   m_PrefabInternal: {fileID: 1306039011}
+--- !u!114 &1533236263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1533236261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c017f4b158da95e4da785de61c0968c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 10
+  axis: {x: 1, y: 0, z: 0}
+--- !u!114 &1533236264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1533236261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b2e8d3554f76547af15b449d0966a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1533236263}
+  - {fileID: 401956259}
 --- !u!1001 &1563254778
 Prefab:
   m_ObjectHideFlags: 0

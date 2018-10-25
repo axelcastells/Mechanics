@@ -5,7 +5,20 @@ using UnityEngine;
 public class FKNode : MonoBehaviour {
 
     public float angle;
-    public Vector3 axis;
+
+    [SerializeField]
+    private Vector3 axis;
+    public Vector3 Axis
+    {
+        get
+        {
+            return axis;
+        }
+        set
+        {
+            axis = value.normalized;
+        }
+    }
 	// Use this for initialization
 	void Start () {
 		
