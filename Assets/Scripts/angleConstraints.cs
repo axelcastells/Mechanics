@@ -23,8 +23,15 @@ public class angleConstraints : MonoBehaviour
     {
         if (active)
         {
-            
-            
+            Vector3 axis;
+            float angle;
+
+            transform.localRotation.ToAngleAxis(out angle, out axis);
+
+            angle = Mathf.Clamp(angle, minAngle, maxAngle);
+
+            transform.localRotation = Quaternion.AngleAxis(angle, axis);
+
         }
     }
 
