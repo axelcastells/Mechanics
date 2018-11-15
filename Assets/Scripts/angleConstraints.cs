@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Vortex;
+using Vortex.Math;
 
 public class angleConstraints : MonoBehaviour
 {
@@ -21,7 +21,6 @@ public class angleConstraints : MonoBehaviour
     public bool z;
 
     int debugAxisConstraints;
-    
 
 
     //public Transform parent;
