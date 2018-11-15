@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vortex;
 
 public class angleConstraints : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class angleConstraints : MonoBehaviour
     public bool z;
 
     int debugAxisConstraints;
-
+    
 
 
     //public Transform parent;
@@ -64,11 +65,19 @@ public class angleConstraints : MonoBehaviour
 
         if (isAxisConstraint)
         {
-            if (!x) axis.x = 0;
-            if (!y) axis.y = 0;
-            if (!z) axis.z = 0;
+            Vector3 target1 = new Vector3(1, 1, 0).normalized;
+            float target1Mag = Vector3.Magnitude(target1);
+            Vector3 targetMag = target1 / target1Mag;
+            Vector3 finalMag = target1 / Mathf.Pow(target1Mag, 2);
+            Vector3 firstCross = Vector3.Cross(transform.forward, targetMag);
+            Vector3 proj = Vector3.Cross(firstCross, finalMag);
+
+            if (!x) axis.x = proj.x;
+            if (!y) axis.y = proj.y;
+            if (!z) axis.z = proj.z;
 
             axis.Normalize();
+
         }
 
         transform.localRotation = Quaternion.AngleAxis(angle, axis);
