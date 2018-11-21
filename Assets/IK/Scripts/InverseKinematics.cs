@@ -119,10 +119,9 @@ namespace ENTICourse.IK
         public float CalculateGradient(Vector3 target, float[] Solution, int i, float delta)
         {
             //TODO 
-            float gradient = 0;
-
-            float distance = DistanceFromTarget(target, Solution);
-            //(Solution[i] + delta) - 
+            float[] tmp = Solution;
+            tmp[i] += delta;
+            float gradient = DistanceFromTarget(target, tmp) - DistanceFromTarget(target, Solution) / delta;
 
             return gradient;
         }
