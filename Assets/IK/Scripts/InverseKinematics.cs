@@ -95,6 +95,7 @@ namespace ENTICourse.IK
         void Update()
         {
             // Do we have to approach the target?
+            target = Destination.position;
            //TODO
 
            
@@ -111,17 +112,32 @@ namespace ENTICourse.IK
         public void ApproachTarget(Vector3 target)
         {
             //TODO
+            for (int i = 0; i < Joints.Length-1; i++)
+            {
+                float gradient = CalculateGradient(target, Solution, i, DeltaGradient);
+                Solution[i] -= LearningRate * gradient;    
+            }
 
-           
+            for(int i = 0; i < Joints.Length - 1; i++)
+            {
+                Joints[i].MoveArm(Solution[i]);
+            }
+
         }
 
         
         public float CalculateGradient(Vector3 target, float[] Solution, int i, float delta)
         {
             //TODO 
-            float[] tmp = Solution;
-            tmp[i] += delta;
-            float gradient = DistanceFromTarget(target, tmp) - DistanceFromTarget(target, Solution) / delta;
+            float aux = Solution[i];
+            Solution[i] += delta;
+            float d1 = DistanceFromTarget(target, Solution);
+
+            Solution[i] = aux;
+
+            float d2 = DistanceFromTarget(target, Solution);
+
+            float gradient = (d1 - d2) / delta;          
 
             return gradient;
         }
@@ -147,7 +163,7 @@ namespace ENTICourse.IK
 
 
             //TODO
-            for (int i = 0; i < Joints.Length; i++)
+            for (int i = 0; i < Joints.Length-1; i++)
             {
                 rotation = Quaternion.AngleAxis(Solution[i], Joints[i].Axis) * rotation;
 
