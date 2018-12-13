@@ -2,148 +2,146 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class iksolver : MonoBehaviour {
+public class iksolver : MonoBehaviour
+{
 
-	// Array to hold all the joints
-	// index 0 - root
-	// index END - End Effector
-	[SerializeField]
-    GameObject[] joints;
-
+    // Array to hold all the joints
+    // index 0 - root
+    // index END - End Effector
+    public GameObject[] joints;
     // The target for the IK system
+    public GameObject targ;
+
+    // The sine component for each joint
+
+    private float[] _sin, _cos, _theta;
+
+
     [SerializeField]
-    GameObject targ;
 
 
-    // Array of angles to rotate by (for each joint), as well as sin and cos values
-    [SerializeField]
-    float[] _theta, _sin, _cos;
 
-	// To check if the target is reached at any point
-	bool _done = false;
-	
+
+
+
+    // To check if the target is reached at any point
+    public bool done = false;
     // To store the position of the target
-	private Vector3 tpos;
+    private Vector3 tpos;
 
-	// Max number of tries before the system gives up (Maybe 10 is too high?)
-	[SerializeField]
-	private int _mtries = 10;
-	// The number of tries the system is at now
-	[SerializeField]
-	private int _tries = 0;
-	
-	// the range within which the target will be assumed to be reached
-	readonly float _epsilon = 0.1f;
+    // Max number of tries before the system gives up (Maybe 10 is too high?)
+    [SerializeField]
+    private int Mtries = 10;
+    // The number of tries the system is at now
+    [SerializeField]
+    private int tries = 0;
+
+    // the range within which the target will be assumed to be reached
+    private float epsilon = 0.1f;
 
 
-	// Initializing the variables
-	void Start () {
-		_theta = new float[joints.Length];
-		_sin = new float[joints.Length];
-		_cos = new float[joints.Length];
-		tpos = targ.transform.position;
-	}
-	
-	// Running the solver - all the joints are iterated through once every frame
-	void Update () {
-		// if the target hasn't been reached
-		if (!_done)
-		{	
-			// if the Max number of tries hasn't been reached
-			if (_tries <= _mtries)
-			{
-				// starting from the second last joint (the last being the end effector)
-				// going back up to the root
-				for (int i = joints.Length - 2; i >= 0; i--)
-				{
 
+
+    // Initializing the variables
+    void Start()
+    {
+        _theta = new float[joints.Length];
+        _sin = new float[joints.Length];
+        _cos = new float[joints.Length];
+        tpos = targ.transform.position;
+    }
+
+    // Running the solver - all the joints are iterated through once every frame
+    void Update()
+    {
+        // if the target hasn't been reached
+        if (!done)
+        {
+            // if the Max number of tries hasn't been reached
+            if (tries <= Mtries)
+            {
+                // starting from the second last joint (the last being the end effector)
+                // going back up to the root
+                for (int i = joints.Length - 2; i >= 0; i--)
+                {
                     // The vector from the ith joint to the end effector
                     Vector3 r1 = joints[joints.Length - 1].transform.position - joints[i].transform.position;
-                    Debug.Log("Vector 1 / Iteration: "+i+ ":" + r1);
-
                     // The vector from the ith joint to the target
                     Vector3 r2 = targ.transform.position - joints[i].transform.position;
-                    Debug.Log("Vector 2 / Iteration: " + i + ":" + r2);
 
                     // to avoid dividing by tiny numbers
                     if (r1.magnitude * r2.magnitude <= 0.001f)
                     {
-                        
-                        //cos? sin? 
-                        //TODO3
-
+                        // cos component will be 1 and sin will be 0
+                        _cos[i] = 1;
+                        _sin[i] = 0;
                     }
                     else
                     {
-                        //find the components using dot and cross product
-
-                        //TODO4
-
+                        // find the components using dot and cross product
+                        _cos[i] = Vector3.Dot(r1, r2) / (r1.magnitude * r2.magnitude);
+                        _sin[i] = (Vector3.Cross(r1, r2)).magnitude / (r1.magnitude * r2.magnitude);
 
                     }
 
-                    // The axis of rotation 
-                    // Vector3 axis = TODO5
-                    Vector3 axis = Vector3.Cross(r1.normalized, r2.normalized);
+                    // The axis of rotation is basically the 
+                    // unit vector along the cross product 
+                    Vector3 axis = (Vector3.Cross(r1, r2)) / (r1.magnitude * r2.magnitude);
 
-                    // find the angle between r1 and r2 (and clamp values if needed avoid errors)
-                    //theta[i] = TODO6 
-                    float angle = Mathf.Acos(Vector3.Dot(r1.normalized, r2.normalized));
-                    _theta[i] = angle;
-
-
-                    //Optional. correct angles if needed, depending on angles invert angle if sin component is negative
-                    //	theta[i] = TODO7
-
-                    //if (Mathf.Sin(angle) < 0)
-                    //    angle += 180;
-
-
+                    // find the angle between r1 and r2 (and clamp values of cos to avoid errors)
+                    _theta[i] = Mathf.Acos(Mathf.Max(-1, Mathf.Min(1, _cos[i])));
+                    // invert angle if sin component is negative
+                    if (_sin[i] < 0.0f)
+                        _theta[i] = -_theta[i];
                     // obtain an angle value between -pi and pi, and then convert to degrees
-                    //theta[i] = TODO8
-
+                    _theta[i] = (float)SimpleAngle(_theta[i]) * Mathf.Rad2Deg;
                     // rotate the ith joint along the axis by theta degrees in the world space.
-                    // TODO9
-                    joints[i].transform.rotation = Quaternion.AngleAxis(angle, axis);
+                    joints[i].transform.Rotate(axis, _theta[i], Space.World);
 
                 }
-				
-				// increment tries
-				_tries++;
-			}
-		}
 
-		// find the difference in the positions of the end effector and the target
-		// TODO10
-		
-		// if target is within reach (within epsilon) then the process is done
-		/*if (TODO11)
-		{
-			done = true;
-		}
-		// if it isn't, then the process should be repeated
-		else
-		{
-			done = false;
-		}*/
-		
-		// the target has moved, reset tries to 0 and change tpos
-		if(targ.transform.position!=tpos)
-		{
-			_tries = 0;
-			tpos = targ.transform.position;
-		}
+                // increment tries
+                tries++;
+            }
+        }
+
+        // find the difference in the positions of the end effector and the target
+        // (there's obviously a more beautiful and DRY way to do this)
+        float x = Mathf.Abs(joints[joints.Length - 1].transform.position.x - targ.transform.position.x);
+        float y = Mathf.Abs(joints[joints.Length - 1].transform.position.y - targ.transform.position.y);
+        float z = Mathf.Abs(joints[joints.Length - 1].transform.position.z - targ.transform.position.z);
+
+        // if target is within reach (within epsilon) then the process is done
+        if (x < epsilon && y < epsilon && z < epsilon)
+        {
+            done = true;
+        }
+        // if it isn't, then the process should be repeated
+        else
+        {
+            done = false;
+        }
+
+        // the target has moved, reset tries to 0 and change tpos
+        if (targ.transform.position != tpos)
+        {
+            tries = 0;
+            tpos = targ.transform.position;
+        }
 
 
 
 
-	}
+    }
 
-    /*
-	// function to convert an angle to its simplest form (between -pi to pi radians)
-	double SimpleAngle(double theta)
-	{
-		theta = TODO
-		return theta;
-	}*/
+    // function to convert an angle to its simplest form (between -pi to pi radians)
+    double SimpleAngle(double theta)
+    {
+        theta = theta % (2.0 * Mathf.PI);
+        if (theta < -Mathf.PI)
+            theta += 2.0 * Mathf.PI;
+        else if (theta > Mathf.PI)
+            theta -= 2.0 * Mathf.PI;
+        return theta;
+    }
 }
