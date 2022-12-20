@@ -36,7 +36,6 @@ public class ObjectSelector : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Start Selection!");
             RaycastHit hit;
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
@@ -51,13 +50,11 @@ public class ObjectSelector : MonoBehaviour
 
         else if (Input.GetMouseButton(0))
         {
-            Debug.Log("Dragging...");
             DragSelectedItem();
         }
 
         else if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("Stop!");
             selectedItem = null;
         }
     }
