@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class IKSample : MonoBehaviour
 {
-    public IKSolver ikController;
-    public Transform target;
+    public List<IKSolver> ikControllers;
+    public List<Transform> targets;
     // Start is called before the first frame update
     void Start()
     {
-        ikController.Run(target);
+        for(int i = 0; i < ikControllers.Count; i++)
+        {
+            if(targets.Count > i)
+                ikControllers[i].Run(targets[i]);
+        }
     }
 
     // Update is called once per frame
